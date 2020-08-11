@@ -12,6 +12,9 @@ class Grafo():
 
     def eliminarVertice(self, v):
         del self.vertices[v]
+        for w in self.vertices:
+            if v in self.vertices[w]:
+                del self.vertices[w][v]
         self.cantidad -= 1
 
     def agregarArista(self, v, w, peso = 1):
