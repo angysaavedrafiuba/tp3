@@ -46,7 +46,10 @@ class Grafo():
         return self.vertices.keys()
 
     def obtenerAdyacentes(self, v):
-        return self.vertices[v].keys()
+        adyacentes = []
+        if v in self.vertices:
+             adyacentes = self.vertices[v].keys()
+        return adyacentes
 
     def __len__(self):
         return self.cantidad
