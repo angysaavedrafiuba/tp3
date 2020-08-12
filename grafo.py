@@ -1,8 +1,14 @@
 import random
 
 class Grafo():
+    '''
+    El grafo puede recibir dos parámetros:
+    1: True si es dirigido o False en caso contrario
+    2: un diccionario con los vertices a agregar
+    '''
     
-    def __init__(self,vertices = {}):
+    def __init__(self, dirigido = True, vertices = {}):
+        self.es_dirigido = dirigido
         self.vertices = vertices
         self.cantidad = len(vertices)
 
@@ -19,16 +25,14 @@ class Grafo():
 
     def agregarArista(self, v, w, peso = 1):
         self.vertices[v][w] = peso
-
-        # Consultar como hacer en caso de no dirigido para agregar y borrar
-        #if peso == 1:
-        #    self.vertices[w][v] = peso
+        if(self.es_dirigido):
+            self.vertices[w][v] = peso
 
     def eliminarArista(self, v, w):
         peso = self.vertices[v][w]
         del self.vertices[v][w]
-        #if peso == 1:
-        #    del self.vertices[w][v]
+        if(self.es_dirigido):
+            del self.vertices[w][v]
 
     def obtenerPeso(self, v, w):
         if v in self.vertices and w in self.vertices[v]:
@@ -54,7 +58,7 @@ class Grafo():
     def __len__(self):
         return self.cantidad
 
-    def __del__(self): #Borrar uno por uno?
+    def __del__(self): #Borrar uno por uno? 
         del self.vertices
 
     def __str__(self):
