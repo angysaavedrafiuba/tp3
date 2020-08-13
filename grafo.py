@@ -25,13 +25,12 @@ class Grafo():
 
     def agregarArista(self, v, w, peso = 1):
         self.vertices[v][w] = peso
-        if(self.es_dirigido):
+        if not self.es_dirigido:
             self.vertices[w][v] = peso
 
     def eliminarArista(self, v, w):
-        peso = self.vertices[v][w]
         del self.vertices[v][w]
-        if(self.es_dirigido):
+        if not self.es_dirigido:
             del self.vertices[w][v]
 
     def obtenerPeso(self, v, w):

@@ -81,3 +81,29 @@ def cfc_dfs(grafo, v, componentes, orden, mas_bajo, visitados, pila):
 			if elemento == v:
 				break
 
+# para el comando ciclo de n articulos
+# backtracking
+def ciclo_de_largo_n(grafo, origen, n):
+	camino = []
+	visitados = set()
+	if(ciclo_de_largo_n_rec(grafo, origen, origen, n, camino, visitados)):
+		return camino
+	return None
+
+def ciclo_de_largo_n_rec(grafo, origen, v, n, camino, visitados):
+	if len(camino) == n:
+		if v == origen:
+			return True
+		return False
+
+	if v in visitados or len(camino) > n:
+		return False
+
+	camino.append(v)
+	visitados.add(v)
+	for w in grafo.obtenerAdyacentes(v):
+		todo_ok = ciclo_de_largo_n_rec(grafo, origen, w, n, camino, visitados)
+		if todo_ok:
+			return True
+	camino.pop()
+	return False
