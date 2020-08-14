@@ -107,3 +107,20 @@ def ciclo_de_largo_n_rec(grafo, origen, v, n, camino, visitados):
 			return True
 	camino.pop()
 	return False
+
+
+#Para el comando diametro
+#Aplica bfs para cada vertice
+def diametro(grafo):
+	_padres = {}
+	_orden = {}
+	diametro = 0
+	for v in grafo.obtenerVertices():
+		padres, orden = bfs(grafo, v)
+		if ( max(orden.values()) > diametro):
+			_padres = padres
+			_orden = orden
+			diametro = max(orden.values())
+	
+	return diametro, _padres, _orden 
+

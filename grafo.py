@@ -13,25 +13,31 @@ class Grafo():
         self.cantidad = len(vertices)
 
     def agregarVertice(self, v):
-        self.vertices[v] = {}
-        self.cantidad += 1
+        if v not in self.vertices:
+            self.vertices[v] = {}
+            self.cantidad += 1
 
     def eliminarVertice(self, v):
-        del self.vertices[v]
-        for w in self.vertices:
-            if v in self.vertices[w]:
-                del self.vertices[w][v]
-        self.cantidad -= 1
+        if v in self.vertices:
+            del self.vertices[v]
+        
+            for w in self.vertices:
+                if v in self.vertices[w]:
+                    del self.vertices[w][v]
+            
+            self.cantidad -= 1
 
     def agregarArista(self, v, w, peso = 1):
-        self.vertices[v][w] = peso
-        if not self.es_dirigido:
-            self.vertices[w][v] = peso
+        if v in self.vertices and w in self.vertices:
+            self.vertices[v][w] = peso
+            if not self.es_dirigido:
+                self.vertices[w][v] = peso
 
     def eliminarArista(self, v, w):
-        del self.vertices[v][w]
-        if not self.es_dirigido:
-            del self.vertices[w][v]
+        if v in self.vertices and w in self.vertices[v]:
+            del self.vertices[v][w]
+            if not self.es_dirigido:
+                del self.vertices[w][v]
 
     def obtenerPeso(self, v, w):
         if v in self.vertices and w in self.vertices[v]:
