@@ -178,3 +178,38 @@ def orden_topologico_bfs(grafo, elementos = None):
 	if len(resultado) != len(elementos):
 		return None
 	return resultado
+
+'''def diametro(grafo):
+	_padres = {}
+	_orden = {}
+	maximo = 0
+	for v in grafo.obtenerVertices():
+		padres, distancias = bfs(grafo, v)
+		for w in distancias:
+			if distancias[w] > maximo:
+				maximo = distancias[w]
+				_padres = padres
+				_orden = distancias
+	
+	return maximo, _padres, _orden 
+'''
+
+
+'''
+def vertices_distancia_n(grafo, origen, n):
+	q = deque()
+	q.append(origen)
+	distancia = {}
+	distancia[origen] = 0
+	lista = []
+	while q:
+		v = q.popleft()
+		for w in grafo.obtenerAdyacentes(v):
+			if w not in distancia:
+				distancia[w] = distancia[v] + 1
+				q.append(w)
+				if distancia[w] == int(n):
+					lista.append(w)
+				if distancia[w] > int(n):
+					return lista 
+'''

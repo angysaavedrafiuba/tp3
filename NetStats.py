@@ -9,9 +9,10 @@ class NetStats(cmd.Cmd):
 	def __init__(self):
 		cmd.Cmd.__init__(self)
 		self.grafo = Grafo()
-		self.comandos = ["camino","diametro", "conectados", "ciclo", "clustering", "lectura"]
+		self.comandos = ["camino", "conectados", "ciclo", "lectura", "diametro", "rango", "clustering"]
 		self.cfc_conectividad = {}
 		self.coef_clustering = {}
+
 		
 	def agregarArticulo(self, titulo):
 		self.grafo.agregarVertice(titulo)
@@ -30,6 +31,10 @@ class NetStats(cmd.Cmd):
 					self.agregarArticulo(titulos[i])
 					self.agregarLink(titulos[0], titulos[i])
 					i+=1
+
+	def do_camino(self, args):
+		arg = args.split(',')
+		self.camino(arg[0], arg[1])
 
 	def camino(self, origen, destino):
 		origenes, cantidad_links = bfs(self.grafo, origen)
@@ -52,10 +57,9 @@ class NetStats(cmd.Cmd):
 		print ()
 		print ("Costo:", end=' ')
 		print (costo)
-	
-	def do_camino(self, args):
-		arg = args.split(',')
-		self.camino(arg[0], arg[1])
+
+	def do_diametro(self, args):
+		self.diametro()
 
 	def diametro(self):
 		diam, origenes, cantidad_links = diametro(self.grafo)
@@ -69,9 +73,6 @@ class NetStats(cmd.Cmd):
 				destino = v 
 
 		self.imprimirCamino(origenes, origen, destino, diam)
-
-	def do_diametro(self, args):
-		self.diametro()
 
 	def do_conectados(self, args):
 		self.conectados(self, args)
@@ -121,9 +122,18 @@ class NetStats(cmd.Cmd):
 			print("No existe forma de leer las paginas en orden")
 		else:
 			print(", ".join(camino_inverso[::-1]))
+	
+	def do_rango(self, args):
+		arg = args.split(',')
+		self.rango(arg[0], arg[1])
 
-	def __str__(self):
-		return str(self.grafo)
+	def rango(self, pagina, n):
+		origenes, cantidad_links = bfs(self.grafo, pagina)
+		rango = 0
+		for v in cantidad_links:
+			if cantidad_links[v] == int(n):
+				rango += 1
+		print(rango)
 
 	def do_listar_operaciones(self, args):
 		for c in self.comandos:
@@ -131,6 +141,9 @@ class NetStats(cmd.Cmd):
 
 	def do_EOF(self, line):
 		return True
+
+	def __str__(self):
+		return str(self.grafo)
 
 	prompt = ""
 
