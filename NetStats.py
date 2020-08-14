@@ -28,7 +28,7 @@ class NetStats(cmd.Cmd):
 				i = 1
 				while (i < len(titulos)):
 					self.agregarArticulo(titulos[i])
-					self.agregarLink(titulos[i-1], titulos[i])
+					self.agregarLink(titulos[0], titulos[i])
 					i+=1
 
 	def camino(self, origen, destino):
@@ -94,7 +94,6 @@ class NetStats(cmd.Cmd):
 
 	def do_clustering(self, args = None):
 		self.clustering(args)
-		print(self.grafo.obtenerAdyacentes(args))
 
 	def clustering(self, pagina=None):
 		if pagina != None:
@@ -114,7 +113,7 @@ class NetStats(cmd.Cmd):
 
 	def do_lectura(self, args):
 		arg = args.split(',')
-		self.lectura(args)
+		self.lectura(arg)
 
 	def lectura(self, paginas):
 		camino_inverso = orden_topologico_bfs(self.grafo, paginas)
