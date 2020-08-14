@@ -3,7 +3,7 @@ from funciones_grafos import *
 from collections import deque
 import sys
 import cmd
-sys.setrecursionlimit(1000000)
+sys.setrecursionlimit(10**6)
 
 
 class NetStats(cmd.Cmd):
@@ -77,7 +77,6 @@ class NetStats(cmd.Cmd):
 		self.imprimirCamino(origenes, origen, destino, diam)
 
 	def do_conectados(self, args):
-		print(args)
 		self.conectados(args)
 
 	def conectados(self, pagina):
@@ -121,7 +120,6 @@ class NetStats(cmd.Cmd):
 
 	def lectura(self, paginas):
 		camino_inverso = orden_topologico_bfs(self.grafo, paginas)
-		print(camino_inverso)
 		if camino_inverso == None:
 			print("No existe forma de leer las paginas en orden")
 		else:

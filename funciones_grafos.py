@@ -22,36 +22,6 @@ def bfs(grafo, origen):
 
 	return padres, orden
 
-'''
-# para el comando camino mas corto
-def camino_minimo_bfs(grafo, origen, destino):
-	padres = {}
-	cola = deque()
-
-	padres[origen] = None
-	cola.append(origen)
-
-	while(len(cola) > 0):
-		v = cola.popleft()
-		for w in grafo.obtenerAdyacentes(v):
-			if w not in padres:
-				padres[w] = v
-				cola.append(w)
-				if w == destino:
-					return armar_camino_padres(padres, origen, destino)
-	return None
-
-def armar_camino_padres(padres, origen, destino):
-	camino = []
-	v = destino
-
-	while v != origen:
-		camino.append(v)
-		v = padres[v]
-	camino.append(v)
-	return camino[::-1]
-'''
-
 # para el comando conectividad
 def componentes_fuertemente_conexas(grafo, v, componentes = {}):
 	orden = {}
@@ -183,37 +153,4 @@ def orden_topologico_bfs(grafo, elementos = None):
 		return None
 	return resultado
 
-'''def diametro(grafo):
-	_padres = {}
-	_orden = {}
-	maximo = 0
-	for v in grafo.obtenerVertices():
-		padres, distancias = bfs(grafo, v)
-		for w in distancias:
-			if distancias[w] > maximo:
-				maximo = distancias[w]
-				_padres = padres
-				_orden = distancias
-	
-	return maximo, _padres, _orden 
-'''
 
-
-'''
-def vertices_distancia_n(grafo, origen, n):
-	q = deque()
-	q.append(origen)
-	distancia = {}
-	distancia[origen] = 0
-	lista = []
-	while q:
-		v = q.popleft()
-		for w in grafo.obtenerAdyacentes(v):
-			if w not in distancia:
-				distancia[w] = distancia[v] + 1
-				q.append(w)
-				if distancia[w] == int(n):
-					lista.append(w)
-				if distancia[w] > int(n):
-					return lista 
-'''
