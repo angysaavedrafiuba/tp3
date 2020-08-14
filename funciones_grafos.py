@@ -57,28 +57,32 @@ def componentes_fuertemente_conexas(grafo, v, componentes = {}):
 	orden = {}
 	mas_bajo = {}
 	visitados = set()
+	apilados = set()
 	pila = []
-
 	orden[v] = 0
-	cfc_dfs(grafo, v, componentes, orden, mas_bajo, visitados, pila)
 
-def cfc_dfs(grafo, v, componentes, orden, mas_bajo, visitados, pila):
-	mas_bajo[v] = orden[v]
+	cfc_dfs(grafo, v, visitados, pila, apilados, orden, mas_bajo, componentes)
+
+def cfc_dfs(grafo, v, visitados, pila, apilados, orden, mas_bajo, componentes):
 	visitados.add(v)
 	pila.append(v)
+	apilados.add(v)
+	mas_bajo[v] = orden[v]
 
 	for w in grafo.obtenerAdyacentes(v):
 		if w not in visitados:
-			visitados.add(w)
 			orden[w] = orden[v] + 1
-			cfc_dfs(grafo, w, componentes, orden, mas_bajo, visitados, pila)
-		if mas_bajo[v] > mas_bajo[w]:
-			mas_bajo[v] = mas_bajo[w]
+			cfc_dfs(grafo, w, visitados, pila, apilados, orden, mas_bajo, componentes)
+			mas_bajo[v] = min(mas_bajo[v], mas_bajo[w])
+		else:
+			if w in apilados:
+				mas_bajo[v] = min(mas_bajo[v], mas_bajo[w])
 
 	if mas_bajo[v] == orden[v]:
 		nueva_cfc = []
 		while (True):
 			elemento = pila.pop()
+			apilados.remove(elemento)
 			nueva_cfc.append(elemento)
 			if elemento == v:
 				break
@@ -161,7 +165,7 @@ def orden_topologico_bfs(grafo, elementos = None):
 		grado_entrada[i] = 0
 	for v in elementos:
 		for w in grafo.obtenerAdyacentes(v):
-			if w in grado_entrada:
+			if w in elementos:
 				grado_entrada[w] += 1
 	for z in elementos:
 		if grado_entrada[z] == 0:

@@ -3,6 +3,8 @@ from funciones_grafos import *
 from collections import deque
 import sys
 import cmd
+sys.setrecursionlimit(1000000)
+
 
 class NetStats(cmd.Cmd):
 	
@@ -75,11 +77,12 @@ class NetStats(cmd.Cmd):
 		self.imprimirCamino(origenes, origen, destino, diam)
 
 	def do_conectados(self, args):
-		self.conectados(self, args)
+		print(args)
+		self.conectados(args)
 
 	def conectados(self, pagina):
 		if not pagina in self.cfc_conectividad:
-			cfc(self.grafo, pagina, self.cfc_conectividad)
+			componentes_fuertemente_conexas(self.grafo, pagina, self.cfc_conectividad)
 		print(", ".join(self.cfc_conectividad[pagina]))
 
 	def do_ciclo(self, args):
@@ -118,10 +121,11 @@ class NetStats(cmd.Cmd):
 
 	def lectura(self, paginas):
 		camino_inverso = orden_topologico_bfs(self.grafo, paginas)
+		print(camino_inverso)
 		if camino_inverso == None:
 			print("No existe forma de leer las paginas en orden")
 		else:
-			print(", ".join(camino_inverso[::-1]))
+			print(", ".join( camino_inverso[::-1]) )
 	
 	def do_rango(self, args):
 		arg = args.split(',')
