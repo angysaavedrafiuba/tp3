@@ -22,6 +22,7 @@ def bfs(grafo, origen):
 
 	return padres, orden
 
+'''
 # para el comando camino mas corto
 def camino_minimo_bfs(grafo, origen, destino):
 	padres = {}
@@ -49,7 +50,7 @@ def armar_camino_padres(padres, origen, destino):
 		v = padres[v]
 	camino.append(v)
 	return camino[::-1]
-
+'''
 
 # para el comando conectividad
 def componentes_fuertemente_conexas(grafo, v, componentes = {}):
@@ -75,11 +76,14 @@ def cfc_dfs(grafo, v, componentes, orden, mas_bajo, visitados, pila):
 			mas_bajo[v] = mas_bajo[w]
 
 	if mas_bajo[v] == orden[v]:
-		while(True):
+		nueva_cfc = []
+		while (True):
 			elemento = pila.pop()
-			componentes[elemento] = v
+			nueva_cfc.append(elemento)
 			if elemento == v:
 				break
+		for i in nueva_cfc:
+			componentes[i] = nueva_cfc
 
 # para el comando ciclo de n articulos
 # backtracking
@@ -87,6 +91,7 @@ def ciclo_de_largo_n(grafo, origen, n):
 	camino = []
 	visitados = set()
 	if(ciclo_de_largo_n_rec(grafo, origen, origen, n, camino, visitados)):
+		camino.append(origen)
 		return camino
 	return None
 
@@ -124,3 +129,52 @@ def diametro(grafo):
 	
 	return diametro, _padres, _orden 
 
+def coeficiente_de_clustering(grafo, v):
+	ady_enlazados = 0
+	grado_de_salida = 0
+	adyacentes = grafo.obtenerAdyacentes(v)
+	if len(adyacentes) < 2:
+		return 0
+	for w in adyacentes:
+		if w == v:
+			continue
+		grado_de_salida += 1
+		for z in grafo.obtenerAdyacentes(w):
+			if z in adyacentes and z != w and z != v:
+				ady_enlazados += 1
+	if ady_enlazados == 0:
+		return 0
+	coef = ady_enlazados / (grado_de_salida * (grado_de_salida - 1))
+	return round(coef, 3)
+
+
+#para el comando lectura a las 2 am
+def orden_topologico_bfs(grafo, elementos = None):
+	if(elementos == None):
+		elementos = grafo.obtenerVertices()
+
+	cola = deque()
+	grado_entrada = {}
+	resultado = []
+
+	for i in elementos:
+		grado_entrada[i] = 0
+	for v in elementos:
+		for w in grafo.obtenerAdyacentes(v):
+			if w in grado_entrada:
+				grado_entrada[w] += 1
+	for z in elementos:
+		if grado_entrada[z] == 0:
+			cola.append(z)
+
+	while len(cola) > 0:
+		v = cola.popleft()
+		for w in grafo.obtenerAdyacentes(v):
+			if w in grado_entrada:
+				grado_entrada[w] -= 1
+				if grado_entrada[w] == 0:
+					cola.append(w)
+		resultado.append(v)
+	if len(resultado) != len(elementos):
+		return None
+	return resultado

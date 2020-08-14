@@ -9,7 +9,9 @@ class NetStats(cmd.Cmd):
 	def __init__(self):
 		cmd.Cmd.__init__(self)
 		self.grafo = Grafo()
-		self.comandos = ["camino","diametro"]
+		self.comandos = ["camino","diametro", "conectados", "ciclo", "clustering", "lectura"]
+		self.cfc_conectividad = {}
+		self.coef_clustering = {}
 		
 	def agregarArticulo(self, titulo):
 		self.grafo.agregarVertice(titulo)
@@ -70,6 +72,56 @@ class NetStats(cmd.Cmd):
 
 	def do_diametro(self, args):
 		self.diametro()
+
+	def do_conectados(self, args):
+		self.conectados(self, args)
+
+	def conectados(self, pagina):
+		if not pagina in self.cfc_conectividad:
+			cfc(self.grafo, pagina, self.cfc_conectividad)
+		print(", ".join(self.cfc_conectividad[pagina]))
+
+	def do_ciclo(self, args):
+		arg = args.split(',')
+		self.ciclo(arg[0], int(arg[1]))
+
+	def ciclo(self, pagina, n):
+		camino = ciclo_de_largo_n(self.grafo, pagina, n)
+		if camino:
+			print(" -> ".join(camino))
+		else:
+			print("No se encontraron ciclos de largo {}".format(n))
+
+	def do_clustering(self, args = None):
+		self.clustering(args)
+		print(self.grafo.obtenerAdyacentes(args))
+
+	def clustering(self, pagina=None):
+		if pagina != None:
+			if not pagina in self.coef_clustering:
+				coef = coeficiente_de_clustering(self.grafo, pagina)
+				self.coef_clustering[pagina] = coef
+			print(self.coef_clustering[pagina])
+		else:
+			suma = 0
+			for v in self.grafo.obtenerVertices():
+				if v not in self.coef_clustering:
+					coef = coeficiente_de_clustering(self.grafo, v)
+					self.coef_clustering[v] = coef
+				suma += self.coef[v]
+			promedio = suma / len(self.coef_clustering)
+			print(round(promedio, 3))
+
+	def do_lectura(self, args):
+		arg = args.split(',')
+		self.lectura(args)
+
+	def lectura(self, paginas):
+		camino_inverso = orden_topologico_bfs(self.grafo, paginas)
+		if camino_inverso == None:
+			print("No existe forma de leer las paginas en orden")
+		else:
+			print(", ".join(camino_inverso[::-1]))
 
 	def __str__(self):
 		return str(self.grafo)
