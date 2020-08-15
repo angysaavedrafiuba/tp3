@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from grafo import Grafo
 from funciones_grafos import *
 from collections import deque
@@ -93,13 +94,13 @@ class NetStats(cmd.Cmd):
 		if camino:
 			print(" -> ".join(camino))
 		else:
-			print("No se encontraron ciclos de largo {}".format(n))
+			print("No se encontro recorrido")
 
-	def do_clustering(self, args = None):
+	def do_clustering(self, args):
 		self.clustering(args)
 
-	def clustering(self, pagina=None):
-		if pagina != None:
+	def clustering(self, pagina):
+		if pagina:
 			if not pagina in self.coef_clustering:
 				coef = coeficiente_de_clustering(self.grafo, pagina)
 				self.coef_clustering[pagina] = coef
@@ -110,8 +111,8 @@ class NetStats(cmd.Cmd):
 				if v not in self.coef_clustering:
 					coef = coeficiente_de_clustering(self.grafo, v)
 					self.coef_clustering[v] = coef
-				suma += self.coef[v]
-			promedio = suma / len(self.coef_clustering)
+				suma += self.coef_clustering[v]
+			promedio = suma / len(self.grafo)
 			print(round(promedio, 3))
 
 	def do_lectura(self, args):
