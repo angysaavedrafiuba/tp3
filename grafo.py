@@ -52,13 +52,13 @@ class Grafo():
         return random.choice(list(self.vertices.keys()))
 
     def obtenerVertices(self):
-        return self.vertices.keys()
+        return list(self.vertices.keys())
 
     def obtenerAdyacentes(self, v):
         adyacentes = []
         if v in self.vertices:
              adyacentes = self.vertices[v].keys()
-        return adyacentes
+        return list(adyacentes)
 
     def __len__(self):
         return self.cantidad
