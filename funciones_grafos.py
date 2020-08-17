@@ -193,3 +193,17 @@ def pagerank(grafo):
 	for u in lista_aux:
 		lista_ranks.append(u[0])
 	return lista_ranks
+
+
+def navegacion_por_primer_link(grafo, origen):
+	camino = []
+	cantidad = 20
+	actual = origen
+
+	for i in range(cantidad+1):
+		camino.append(actual)
+		adyacentes = grafo.obtenerAdyacentes(actual)
+		if len(adyacentes) == 0:
+			break
+		actual = adyacentes[0]
+	return camino

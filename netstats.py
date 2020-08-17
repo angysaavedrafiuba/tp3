@@ -12,7 +12,8 @@ class NetStats(cmd.Cmd):
 	def __init__(self):
 		cmd.Cmd.__init__(self)
 		self.grafo = Grafo()
-		self.comandos = ["camino", "conectados", "ciclo", "lectura", "diametro", "rango", "clustering", "mas_importantes"]
+		self.comandos = ["camino", "conectados", "ciclo", "lectura", "diametro", "rango",
+						 "clustering", "mas_importantes", "navegacion"]
 		self.cfc_conectividad = {}
 		self.coef_clustering = {}
 		self.ranking = []
@@ -146,6 +147,10 @@ class NetStats(cmd.Cmd):
 		if len(self.ranking) == 0:
 			self.ranking = pagerank(self.grafo)
 		print(", ".join(self.ranking[:n]))
+
+	def do_navegacion(self, args):
+		camino = navegacion_por_primer_link(self.grafo, args)
+		print(" -> ".join(camino))
 
 	def do_listar_operaciones(self, args):
 		for c in self.comandos:
