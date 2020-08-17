@@ -152,3 +152,44 @@ def orden_topologico_bfs(grafo, elementos = None):
 	return resultado
 
 
+def pagerank(grafo):
+	'''
+	devuelve un diccionario con:
+	clave -> vertice (string)
+	valor -> rank (float de valor entre 0 y 1)
+	'''
+	ranks = {}
+	entrantes = {}  # vertice: [lista de entrantes]
+	salientes = {}  # vertice: cantidad de salientes
+	elementos = grafo.obtenerVertices()
+	N = len(elementos)
+	d = 0.85
+	num_iteraciones = 50
+	lista_ranks = []
+
+	for v in elementos:
+		ranks[v] = 1 / N
+		entrantes[v] = []
+		salientes[v] = 0
+		for w in grafo.obtenerAdyacentes(v):
+			if not w in entrantes:
+				entrantes[w] = []
+			entrantes[w].append(v)
+			salientes[v] += 1
+
+	i = 0
+	calculo_previo = (1 - d) / N
+	suma = 0
+	while i < num_iteraciones:
+		for v in elementos:
+			for w in entrantes[v]:
+				suma += ranks[w] / salientes[w]
+			ranks[v] = calculo_previo + d*(suma)
+			suma = 0
+		i+= 1
+
+	lista_aux = list(ranks.items())
+	lista_aux.sort(key= lambda x: x[1], reverse=True)
+	for u in lista_aux:
+		lista_ranks.append(u[0])
+	return lista_ranks
