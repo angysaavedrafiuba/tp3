@@ -106,11 +106,13 @@ def diametro(grafo):
 def coeficiente_de_clustering(grafo, v):
 	ady_enlazados = 0
 	grado_de_salida = 0
-	adyacentes = grafo.obtenerAdyacentes(v)
+	adyacentes = set(grafo.obtenerAdyacentes(v))
 	if len(adyacentes) < 2:
 		return 0
 	for w in adyacentes:
 		grado_de_salida += 1
+		if w == v:
+			continue
 		for z in grafo.obtenerAdyacentes(w):
 			if z in adyacentes and z != w:
 				ady_enlazados += 1
@@ -155,9 +157,9 @@ def orden_topologico_bfs(grafo, elementos = None):
 
 def pagerank(grafo):
 	'''
-	devuelve un diccionario con:
-	clave -> vertice (string)
-	valor -> rank (float de valor entre 0 y 1)
+	devuelve una lista ordenada con los vertices
+	del grafo, ordenada de forma descendente de acuerdo
+	al pagerank que obtuvo cada uno
 	'''
 	ranks = {}
 	entrantes = {}  # vertice: [lista de entrantes]
@@ -170,7 +172,8 @@ def pagerank(grafo):
 
 	for v in elementos:
 		ranks[v] = 1 / N
-		entrantes[v] = []
+		if not v in entrantes:
+			entrantes[v] = []
 		salientes[v] = 0
 		for w in grafo.obtenerAdyacentes(v):
 			if not w in entrantes:
