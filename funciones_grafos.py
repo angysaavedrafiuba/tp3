@@ -112,8 +112,9 @@ def coeficiente_de_clustering(grafo, v):
 	for w in adyacentes:
 		grado_de_salida += 1
 		for z in grafo.obtenerAdyacentes(w):
-			if z in adyacentes and z != w and z != v:
+			if z in adyacentes and z != w:
 				ady_enlazados += 1
+
 	if grado_de_salida == 0:
 		return 0
 	coef = ady_enlazados / (grado_de_salida * (grado_de_salida - 1))

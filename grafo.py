@@ -27,7 +27,7 @@ class Grafo():
             
             self.cantidad -= 1
 
-    def agregarArista(self, v, w, peso = 1):
+    def agregarArista(self, v, w, peso = None):
         if v in self.vertices and w in self.vertices:
             self.vertices[v][w] = peso
             if not self.es_dirigido:
@@ -62,9 +62,6 @@ class Grafo():
 
     def __len__(self):
         return self.cantidad
-
-    def __del__(self): #Borrar uno por uno? 
-        del self.vertices
 
     def __str__(self):
         return str(self.vertices)
